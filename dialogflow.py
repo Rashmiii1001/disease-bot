@@ -94,6 +94,7 @@ def processRequest(req):
 
     
         log.write_log(sessionID, "Bot Says: "+fulfillmentText)
+        fulfillmentText = "Hello sample"
         return {
             "fulfillmentText": fulfillmentText
         }
