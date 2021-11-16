@@ -1,4 +1,4 @@
-﻿beautifulsoup4
+﻿beautifulsoup4==4.9.3
 certifi
 charset-normalizer
 click
@@ -17,4 +17,4 @@ soupsieve
 urllib3
 Werkzeug
 gunicorn
-bs4
+bs4==0.0.1
