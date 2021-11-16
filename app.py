@@ -1,4 +1,4 @@
-from flask import Flask, request, make_response
+from flask import Flask, request, make_response, render_template
 import json
 from flask_cors import cross_origin
 # from logger import logger
@@ -11,6 +11,11 @@ warnings.filterwarnings("ignore")
 import requests
 
 app = Flask(__name__)
+
+@app.route("/")
+def index():
+    return render_template("index.html")
+
 
 # geting and sending response to dialogflow
 @app.route('/webhook', methods=['POST'])
