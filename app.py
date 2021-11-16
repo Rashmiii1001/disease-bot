@@ -1,7 +1,7 @@
 from flask import Flask, request, make_response
 import json
 from flask_cors import cross_origin
-from logger import logger
+# from logger import logger
 import requests
 from bs4 import BeautifulSoup
 import re
@@ -25,7 +25,7 @@ def webhook():
     res = processRequest(req)
 
     res = json.dumps(res, indent=4)
-    #print(res)
+    print(res)
     r = make_response(res)
     r.headers['Content-Type'] = 'application/json'
     return r
@@ -39,7 +39,7 @@ def processRequest(req):
 
     result = req.get("queryResult")
     user_says=result.get("queryText")
-    log.write_log(sessionID, "User Says: "+user_says)
+    #log.write_log(sessionID, "User Says: "+user_says)
     parameters = result.get("parameters")
     user_symptom = parameters.get("Symptoms")
     print(user_symptom)
@@ -93,13 +93,14 @@ def processRequest(req):
     
 
     
-        log.write_log(sessionID, "Bot Says: "+fulfillmentText)
+        #log.write_log(sessionID, "Bot Says: "+fulfillmentText)
         fulfillmentText = "Hello sample"
         return {
             "fulfillmentText": fulfillmentText
         }
     else:
-        log.write_log(sessionID, "Bot Says: " + result.fulfillmentText)
+        #log.write_log(sessionID, "Bot Says: " + result.fulfillmentText) 
+
 
 
 if __name__ == '__main__':
