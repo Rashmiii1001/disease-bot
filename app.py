@@ -22,6 +22,8 @@ def index():
 @cross_origin()
 def webhook():
 
+    print("Inside webhook!!!!!!!!!!!!!!!!!")
+
     req = request.get_json(silent=True, force=True)
 
     #print("Request:")
@@ -30,7 +32,7 @@ def webhook():
     res = processRequest(req)
 
     res = json.dumps(res, indent=4)
-    #print(res)
+    print(res)
     r = make_response(res)
     r.headers['Content-Type'] = 'application/json'
     return r
@@ -39,6 +41,8 @@ def webhook():
 # processing the request from dialogflow
 def processRequest(req):
     # log = logger.Log()
+
+    print("Inside process request!!!!!!!!!!!!!!!!!")
 
     sessionID=req.get('responseId')
 
@@ -95,7 +99,8 @@ def processRequest(req):
         for i in range(len(user_symptom)):
             detail = user_symptom[i] + "\n" + diseaseDetail(user_symptom[i]) + "\n"
             fulfillmentText += detail
-    
+            print(fulfillmentText)
+
 
     
         # log.write_log(sessionID, "Bot Says: "+fulfillmentText)
