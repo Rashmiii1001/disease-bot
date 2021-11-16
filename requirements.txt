@@ -18,3 +18,4 @@ urllib3
 Werkzeug
 gunicorn
 bs4==0.0.1
+html5lib==1.1
