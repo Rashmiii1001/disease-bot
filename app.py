@@ -59,10 +59,8 @@ def processRequest(req):
         fulfillmentText=""
 
         def diseaseDetail(term):
-            # diseases=[term]
-            diseases=term
-            # ret=term+"\n"
-            ret="-----"
+            diseases=[term]
+            ret=term+"\n"
             for dis in diseases:
                 # search "disease wilipedia" on google
                 query = dis+' wikipedia'
@@ -98,13 +96,10 @@ def processRequest(req):
                             break
             return ret
 
-        detail = "\n" + diseaseDetail(user_symptom) + "\n"
-        fulfillmentText += detail
-        print(fulfillmentText)
-        # for i in range(len(user_symptom)):
-        #     detail = user_symptom[i] + "\n" + diseaseDetail(user_symptom[i]) + "\n"
-        #     fulfillmentText += detail
-        #     print(fulfillmentText)
+        for i in range(len(user_symptom)):
+            detail = user_symptom[i] + "\n" + diseaseDetail(user_symptom[i]) + "\n"
+            fulfillmentText += detail
+            print(fulfillmentText)
 
 
     
