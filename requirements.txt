@@ -17,3 +17,4 @@ soupsieve
 urllib3
 Werkzeug
 gunicorn
+bs4
