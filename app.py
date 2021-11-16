@@ -33,7 +33,7 @@ def webhook():
 
 # processing the request from dialogflow
 def processRequest(req):
-    log = logger.Log()
+    # log = logger.Log()
 
     sessionID=req.get('responseId')
 
