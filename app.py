@@ -97,7 +97,7 @@ def processRequest(req):
             return ret
 
         for i in range(len(user_symptom)):
-            detail = user_symptom[i]  + diseaseDetail(user_symptom[i]) + "  \n"
+            detail =  diseaseDetail(user_symptom[i]) + "  \n"
             fulfillmentText += detail
             print(fulfillmentText)
 
