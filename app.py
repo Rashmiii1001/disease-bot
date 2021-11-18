@@ -98,7 +98,7 @@ def processRequest(req):
             return ret
 
         for i in range(len(user_symptom)):
-            detail =  diseaseDetail(user_symptom[i]) + "  \n"
+            detail =  "You may have one of the following diseases:  \n"+ (i+1)+diseaseDetail(user_symptom[i]) + "  \n"+"We would suggest you to consult a doctor. Please do book an appointment"
             fulfillmentText += detail
             print(fulfillmentText)
 
