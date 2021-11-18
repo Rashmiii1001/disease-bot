@@ -60,7 +60,7 @@ def processRequest(req):
 
         def diseaseDetail(term):
             diseases=[term]
-            ret=term+"\n"
+            ret=term+"  \n"
             for dis in diseases:
                 # search "disease wilipedia" on google
                 query = dis+' wikipedia'
@@ -97,7 +97,7 @@ def processRequest(req):
             return ret
 
         for i in range(len(user_symptom)):
-            detail = user_symptom[i] + "\n" + diseaseDetail(user_symptom[i]) + "\n"
+            detail = user_symptom[i] + "  \n" + diseaseDetail(user_symptom[i]) + "  \n"
             fulfillmentText += detail
             print(fulfillmentText)
 
