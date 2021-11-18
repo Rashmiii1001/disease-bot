@@ -51,6 +51,7 @@ def processRequest(req):
     # log.write_log(sessionID, "User Says: "+user_says)
     parameters = result.get("parameters")
     user_symptom = parameters.get("Symptoms")
+    user_symptom=user_symptom[0:2]
     print(user_symptom)
  	
     intent = result.get("intent").get('displayName')
