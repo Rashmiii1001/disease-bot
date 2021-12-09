@@ -50,14 +50,15 @@ def processRequest(req):
     user_says=result.get("queryText")
     # log.write_log(sessionID, "User Says: "+user_says)
     parameters = result.get("parameters")
-    user_symptom = parameters.get("Symptoms")
-    user_symptom=user_symptom[0:2]
-    disease_info = parameters.get("Symptoms")
+    
+    
 
     print(user_symptom)
  	
     intent = result.get("intent").get('displayName')
     if (intent=='Symptoms-1'):
+        user_symptom = parameters.get("Symptoms")
+        user_symptom=user_symptom[0:2]
 
         fulfillmentText=""
 
@@ -111,6 +112,7 @@ def processRequest(req):
             "fulfillmentText": fulfillmentText
         }
     elif (intent=='FAQ - disease-info'):
+        disease_info = parameters.get("Symptoms")
         fulfillmentText=""
 
         def diseaseDetail(term):
