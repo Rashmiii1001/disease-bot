@@ -109,7 +109,7 @@ def processRequest(req):
             "fulfillmentText": fulfillmentText
         }
     elif (intent=='FAQ - disease-info'):
-        disease_info = parameters.get("Symptoms")
+        disease_info = parameters.get("symptoms")
         fulfillmentText=""
 
         def diseaseDetail(term):
