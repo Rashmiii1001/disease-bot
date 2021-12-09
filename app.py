@@ -110,7 +110,7 @@ def processRequest(req):
         return {
             "fulfillmentText": fulfillmentText
         }
-    elif (intent="FAQ - disease-info"):
+    elif (intent=='FAQ - disease-info'):
         fulfillmentText=""
 
         def diseaseDetail(term):
