@@ -113,11 +113,11 @@ def processRequest(req):
         fulfillmentText=""
 
         def diseaseDetail(term):
-            print(term)
+            print(term[0])
             ret="  \n"
             # for dis in diseases:
             # search "disease wilipedia" on google
-            query = term +' wikipedia'
+            query = term[0] +' wikipedia'
             # tld="co.in"
             # ,stop=10,pause=0.5
             for sr in search(query):
