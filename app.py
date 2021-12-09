@@ -61,7 +61,7 @@ def processRequest(req):
 
         def diseaseDetail(term):
             diseases=[term]
-            ret=term+"  \n"
+            ret = " " + term+"  \n"
             for dis in diseases:
                 # search "disease wilipedia" on google
                 query = dis+' wikipedia'
