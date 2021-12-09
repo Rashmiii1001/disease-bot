@@ -98,11 +98,11 @@ def processRequest(req):
             return ret
 
         for i in range(len(user_symptom)):
-            detail =  "You may have one of the following diseases:  \n"+ (str(i+1)) +diseaseDetail(user_symptom[i]) + "  \n"+"We would suggest you to consult a doctor. Please do book an appointment"
+            detail =   (str(i+1)) +diseaseDetail(user_symptom[i]) 
             fulfillmentText += detail
             print(fulfillmentText)
 
-
+        fulfillmentText="You may have one of the following diseases:  \n"+fulfillmentText+"  \n"+"We would suggest you to consult a doctor. Please do book an appointment"
     
         # log.write_log(sessionID, "Bot Says: "+fulfillmentText)
         return {
