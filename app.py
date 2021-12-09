@@ -50,10 +50,7 @@ def processRequest(req):
     user_says=result.get("queryText")
     # log.write_log(sessionID, "User Says: "+user_says)
     parameters = result.get("parameters")
-    
-    
-
-    print(user_symptom)
+   
  	
     intent = result.get("intent").get('displayName')
     if (intent=='Symptoms-1'):
