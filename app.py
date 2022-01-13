@@ -388,7 +388,7 @@ def processRequest(req):
                             break
         return ret
     
-    elif (intent=='FAQ - disease-info'):
+    elif(intent=='FAQ - disease-info'):
         disease_info = parameters.get("symptoms")
         fulfillmentText=""
 
