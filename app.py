@@ -23,7 +23,7 @@ from itertools import combinations
 from time import time
 from collections import Counter
 import operator
-from xgboost import XGBClassifier
+
 import math
 from sklearn.linear_model import LogisticRegression
 warnings.simplefilter("ignore")
