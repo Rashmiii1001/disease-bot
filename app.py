@@ -106,20 +106,20 @@ def processRequest(req):
         fulfillmentText=""
 
         def synonyms(term):
-        synonyms = []
-        response = requests.get('https://www.thesaurus.com/browse/{}'.format(term))
-        soup = BeautifulSoup(response.content,  "html.parser")
-        try:
-            container=soup.find('section', {'class': 'MainContentContainer'}) 
-            row=container.find('div',{'class':'css-191l5o0-ClassicContentCard'})
-            row = row.find_all('li')
-            for x in row:
-                synonyms.append(x.get_text())
-        except:
-            None
-        for syn in wordnet.synsets(term):
-            synonyms+=syn.lemma_names()
-        return set(synonyms)
+            synonyms = []
+            response = requests.get('https://www.thesaurus.com/browse/{}'.format(term))
+            soup = BeautifulSoup(response.content,  "html.parser")
+            try:
+                container=soup.find('section', {'class': 'MainContentContainer'}) 
+                row=container.find('div',{'class':'css-191l5o0-ClassicContentCard'})
+                row = row.find_all('li')
+                for x in row:
+                    synonyms.append(x.get_text())
+            except:
+                None
+            for syn in wordnet.synsets(term):
+                synonyms+=syn.lemma_names()
+            return set(synonyms)
 
 
   
