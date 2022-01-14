@@ -31,6 +31,7 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.naive_bayes import MultinomialNB
 from sklearn.ensemble import RandomForestClassifier
+import nltk
 nltk.download('all')
 
 # df = pd.read_csv(io.BytesIO(uploaded['dis_sym_dataset_comb.csv']))
