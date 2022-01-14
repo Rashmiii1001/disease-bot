@@ -13,6 +13,12 @@ import pandas as pd
 from sklearn.metrics import accuracy_score, precision_recall_fscore_support
 from sklearn.model_selection import train_test_split, cross_val_score
 from statistics import mean
+from nltk.corpus import wordnet
+import requests
+from bs4 import BeautifulSoup
+from nltk.corpus import stopwords
+from nltk.stem import WordNetLemmatizer
+from nltk.tokenize import RegexpTokenizer
 from itertools import combinations
 from time import time
 from collections import Counter
@@ -123,10 +129,15 @@ def processRequest(req):
     if(intent=='symptoms-start'):
         # processed_user_symptoms=parameters.get("symptoms.original")
         processed_user_symptoms=parameters.get("symptoms")
-        
+
         print("Line 127", processed_user_symptoms)
 
         fulfillmentText=""
+
+        # utlities for pre-processing
+        stop_words = stopwords.words('english')
+        lemmatizer = WordNetLemmatizer()
+        splitter = RegexpTokenizer(r'\w+')
 
         def synonyms(term):
             print("Inside synonyms")
