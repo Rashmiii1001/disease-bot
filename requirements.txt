@@ -21,7 +21,7 @@ bs4==0.0.1
 html5lib==1.1
 altgraph==0.17.2
 appdirs==1.4.4
-beautifulsoup4==4.9.3
+nltk
 bs4==0.0.1
 certifi==2021.5.30
 chardet==4.0.0
