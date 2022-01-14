@@ -121,9 +121,9 @@ def processRequest(req):
         return ret
 
     if(intent=='symptoms-start'):
-        processed_user_symptoms=parameters.get("symptoms.original")
-        p=parameters.get("symptoms")
-        print(p)
+        # processed_user_symptoms=parameters.get("symptoms.original")
+        processed_user_symptoms=parameters.get("symptoms")
+        
         print("Line 127", processed_user_symptoms)
 
         fulfillmentText=""
