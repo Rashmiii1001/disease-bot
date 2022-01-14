@@ -31,6 +31,7 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.naive_bayes import MultinomialNB
 from sklearn.ensemble import RandomForestClassifier
+import nltk
 nltk.download('all')
 
 # df = pd.read_csv(io.BytesIO(uploaded['dis_sym_dataset_comb.csv']))
@@ -186,8 +187,9 @@ def processRequest(req):
                 if count/len(data_sym_split)>0.5:
                     found_symptoms.add(data_sym)
         found_symptoms = list(found_symptoms)
-        # print(found_symptoms)
-        fulfillmentText= "This is the list of synonyms of your symptoms"+found_symptoms+"Do you want to continue?"
+        print(found_symptoms)
+        STRfound_symptoms = ' '.join(map(str, found_symptoms))
+        fulfillmentText= "This is the list of synonyms of your symptoms"+STRfound_symptoms+"Do you want to continue?"
         # for idx, symp in enumerate(found_symptoms):
         #     return(idx,":",symp)
         return {
@@ -234,8 +236,9 @@ def processRequest(req):
             count+=1
             found_symptoms.append(tup[0])
         final_symptoms=found_symptoms[0:10:]
+        STRfinal_symptoms = ' '.join(map(str, final_symptoms))
 
-        fullfillmentText="This is a list of co-occuring symptoms"+final_symptoms+"Do you want to continue?"
+        fullfillmentText="This is a list of co-occuring symptoms"+STRfinal_symptoms+"Do you want to continue?"
         return {
             "fulfillmentText": fulfillmentText
         }
@@ -259,8 +262,8 @@ def processRequest(req):
         for i in range(len(final_symp)):
             final_symp2.append(final_symp[i])
 
-
-        fullfillmentText="This is the final list of symptoms"+final_symp2+"Would you like to proceed?"
+        STRfinal_symp2 = ' '.join(map(str, final_symp2))
+        fullfillmentText="This is the final list of symptoms"+STRfinal_symp2+"Would you like to proceed?"
         return {
             "fulfillmentText": fulfillmentText
         }
