@@ -197,8 +197,8 @@ def processRequest(req):
         }
 
 
-    elif(intent=='symptoms-start - yes - synonyms'):
-
+    if(intent=='symptoms-start-synonyms'):
+        print("inside part 2")
         fulfillmentText=""
 
         term2= parameters.get("number")
