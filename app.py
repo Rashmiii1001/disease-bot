@@ -127,6 +127,8 @@ def processRequest(req):
                             break
         return ret
 
+    found_symptoms = set()
+
     if(intent=='symptoms-start'):
         # processed_user_symptoms=parameters.get("symptoms.original")
         processed_user_symptoms=parameters.get("symptoms")
@@ -176,7 +178,6 @@ def processRequest(req):
 
         # Loop over all the symptoms in dataset and check its similarity score to the synonym string of the user-input
         # symptoms. If similarity>0.5, add the symptom to the final list
-        found_symptoms = set()
         for idx, data_sym in enumerate(dataset_symptoms):
             data_sym_split=data_sym.split()
             for user_sym in user_symptoms:
