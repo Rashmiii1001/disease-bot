@@ -212,8 +212,13 @@ def processRequest(req):
         dis_list = set()
         final_symp = []
         counter_list = []
+        fs=[]
+        print(found_symptoms)
+        for i in found_symptoms:
+            fs.append(i)
+        print(fs)
         for idx in select_list:
-            symp=found_symptoms[int(idx)]
+            symp=fs[int(idx)]
             final_symp.append(symp)
             dis_list.update(set(df1[df1[symp]==1]['label_dis']))
 
