@@ -127,7 +127,6 @@ def processRequest(req):
                             break
         return ret
 
-    found_symptoms = set()
 
     if(intent=='symptoms-start'):
         # processed_user_symptoms=parameters.get("symptoms.original")
@@ -136,7 +135,8 @@ def processRequest(req):
         print("Line 127", processed_user_symptoms)
 
         fulfillmentText=""
-
+        global found_symptoms
+        found_symptoms = set()
         # utlities for pre-processing
         stop_words = stopwords.words('english')
         lemmatizer = WordNetLemmatizer()
@@ -190,7 +190,7 @@ def processRequest(req):
         found_symptoms = list(found_symptoms)
         print(found_symptoms)
         STRfound_symptoms = ' '.join(map(str, found_symptoms))
-        fulfillmentText= "This is the list of synonyms of your symptoms"+STRfound_symptoms+"Do you want to continue?"
+        fulfillmentText= "This is the list of synonyms of your symptoms "+STRfound_symptoms+"  Enter indices."
         # for idx, symp in enumerate(found_symptoms):
         #     return(idx,":",symp)
         return {
