@@ -82,6 +82,8 @@ def processRequest(req):
     user_says=result.get("queryText")
     # log.write_log(sessionID, "User Says: "+user_says)
     parameters = result.get("parameters")
+    parameter2 = result.get("outputContexts").get("parameters").get("symptoms")
+    print(parameter2)
     print("Line 78 - ", parameters)
 
     intent = result.get("intent").get('displayName')
@@ -135,7 +137,7 @@ def processRequest(req):
         print("Line 127", processed_user_symptoms)
 
         fulfillmentText=""
-        global found_symptoms = set()
+        found_symptoms = set()
         # utlities for pre-processing
         stop_words = stopwords.words('english')
         lemmatizer = WordNetLemmatizer()
@@ -211,8 +213,8 @@ def processRequest(req):
         dis_list = set()
         final_symp = []
         counter_list = []
+        found_symptoms = list(parameter2)
         print(found_symptoms)
-        found_symptoms = list(found_symptoms)
         for idx in select_list:
             symp=found_symptoms[int(idx)]
             final_symp.append(symp)
