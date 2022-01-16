@@ -82,7 +82,10 @@ def processRequest(req):
     user_says=result.get("queryText")
     # log.write_log(sessionID, "User Says: "+user_says)
     parameters = result.get("parameters")
-    parameter2 = result.get("outputContexts").get("parameters").get("symptoms")
+    print("!!!!!!!!!!!!!!!!!!!!!!!!")
+    print(result.get("outputContexts")[0])
+    print(result.get("outputContexts")[0].get("parameters"))
+    parameter2 = result.get("outputContexts")[0].get("parameters").get("symptoms")
     print(parameter2)
     print("Line 78 - ", parameters)
 
