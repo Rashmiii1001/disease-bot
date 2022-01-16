@@ -135,8 +135,7 @@ def processRequest(req):
         print("Line 127", processed_user_symptoms)
 
         fulfillmentText=""
-        global found_symptoms
-        found_symptoms = set()
+        global found_symptoms = set()
         # utlities for pre-processing
         stop_words = stopwords.words('english')
         lemmatizer = WordNetLemmatizer()
