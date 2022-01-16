@@ -205,7 +205,7 @@ def processRequest(req):
         print(term2)
 
         # Show the related symptoms found in the dataset and ask user to select among them
-        select_list = term2.split()
+        select_list = term2
         # Find other relevant symptoms from the dataset based on user symptoms based on the highest co-occurance with the
         # ones that is input by the user
         dis_list = set()
@@ -252,7 +252,8 @@ def processRequest(req):
 
         finals=final_symptoms
         final_symp2=[]
-        terms=term3.split()
+        # terms=term3.split()
+        terms = term3
         print(terms)
         for i in range(len(terms)):
             x=int(terms[i])
