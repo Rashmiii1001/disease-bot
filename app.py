@@ -246,7 +246,7 @@ def processRequest(req):
         print(final_symptoms)
         STRfinal_symptoms = ' '.join(map(str, final_symptoms))
 
-        fullfillmentText="This is a list of co-occuring symptoms"+STRfinal_symptoms+"Do you want to continue?"
+        fulfillmentText="This is a list of co-occuring symptoms"+STRfinal_symptoms+"Do you want to continue?"
         return {
             "fulfillmentText": fulfillmentText
         }
@@ -256,7 +256,7 @@ def processRequest(req):
         term3=parameters.get("number")
         print(term3)
 
-        fullfillmentText=""
+        fulfillmentText=""
 
         finals=final_symptoms
         final_symp2=[]
@@ -272,7 +272,7 @@ def processRequest(req):
             final_symp2.append(final_symp[i])
 
         STRfinal_symp2 = ' '.join(map(str, final_symp2))
-        fullfillmentText="This is the final list of symptoms"+STRfinal_symp2+"Would you like to proceed?"
+        fulfillmentText="This is the final list of symptoms"+STRfinal_symp2+"Would you like to proceed?"
         return {
             "fulfillmentText": fulfillmentText
         }
@@ -395,7 +395,7 @@ def processRequest(req):
         print('Line 372')
         print(my_arr.index(max))
         print()
-        fullfillmentText=diseaseDetail(my_array[my_arr.index(max)])
+        fulfillmentText=diseaseDetail(my_array[my_arr.index(max)])
         return {
             "fulfillmentText": fulfillmentText
         }
