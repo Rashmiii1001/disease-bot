@@ -243,6 +243,7 @@ def processRequest(req):
             count+=1
             found_symptoms.append(tup[0])
         final_symptoms=found_symptoms[0:10:]
+        print(final_symptoms)
         STRfinal_symptoms = ' '.join(map(str, final_symptoms))
 
         fullfillmentText="This is a list of co-occuring symptoms"+STRfinal_symptoms+"Do you want to continue?"
