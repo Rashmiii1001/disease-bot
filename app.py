@@ -46,9 +46,6 @@ Y = df1.iloc[:, 0:1]
 dataset_symptoms = list(X.columns)
 print(dataset_symptoms)
 
-global final_symptoms
-final_symptoms = []
-
 # Flask Code
 app = Flask(__name__)
 
@@ -240,7 +237,7 @@ def processRequest(req):
 
         # Iteratively, suggest top co-occuring symptoms to the user and ask to select the ones applicable
         found_symptoms=[]
-        # final_symptoms=[]
+        final_symptoms=[]
         count=0
         for tup in dict_symp_tup:
             count+=1
@@ -251,14 +248,14 @@ def processRequest(req):
 
         fulfillmentText="This is a list of co-occuring symptoms"+STRfinal_symptoms+"Do you want to continue?"
         return {
-            "fulfillmentText": fulfillmentText
+            "fulfillmentText": fulfillmentText,
+            "final_symptoms" : final_symptoms
         }
 
     if(intent=='symptoms-start-co-occuring'):
 
         term3=parameters.get("number")
         print(term3)
-        print(final_symptoms)
 
         fulfillmentText=""
 
@@ -281,7 +278,7 @@ def processRequest(req):
             "fulfillmentText": fulfillmentText
         }
 
-    if(intent=='symptoms-start - yes - synonyms - yes - co-occuring - yes'):
+    elif(intent=='symptoms-start - yes - synonyms - yes - co-occuring - yes'):
 
         fulfillmentText=""
 
