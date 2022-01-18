@@ -45,6 +45,7 @@ Y = df1.iloc[:, 0:1]
 # List of symptoms
 dataset_symptoms = list(X.columns)
 print(dataset_symptoms)
+Global final_symptoms
 
 # Flask Code
 app = Flask(__name__)
@@ -237,7 +238,7 @@ def processRequest(req):
 
         # Iteratively, suggest top co-occuring symptoms to the user and ask to select the ones applicable
         found_symptoms=[]
-        final_symptoms=[]
+     #   final_symptoms=[]
         count=0
         for tup in dict_symp_tup:
             count+=1
