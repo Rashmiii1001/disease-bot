@@ -263,6 +263,7 @@ def processRequest(req):
         finals=final_symptoms
         final_symp2=[]
         # terms=term3.split()
+        print(finals)
         terms = term3
         print(terms)
         for i in range(len(terms)):
