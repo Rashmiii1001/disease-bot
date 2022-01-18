@@ -47,6 +47,9 @@ dataset_symptoms = list(X.columns)
 print(dataset_symptoms)
 global final_symptoms
 final_symptoms=[]
+
+global final_symp
+final_symp=[]
 # Flask Code
 app = Flask(__name__)
 
@@ -215,7 +218,7 @@ def processRequest(req):
         # Find other relevant symptoms from the dataset based on user symptoms based on the highest co-occurance with the
         # ones that is input by the user
         dis_list = set()
-        final_symp = []
+        # final_symp = []
         counter_list = []
         found_symptoms = list(parameter2)
         print(found_symptoms)
