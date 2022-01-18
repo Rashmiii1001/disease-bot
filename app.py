@@ -269,7 +269,8 @@ def processRequest(req):
         for i in range(len(terms)):
             x=int(terms[i])
             print(x)
-            final_symp2.append(finals[x])
+            final_symp2.append(finals[0][x])
+            
         print(final_symp2)
         for i in range(len(final_symp)):
             final_symp2.append(final_symp[i])
