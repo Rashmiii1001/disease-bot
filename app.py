@@ -45,7 +45,7 @@ Y = df1.iloc[:, 0:1]
 # List of symptoms
 dataset_symptoms = list(X.columns)
 print(dataset_symptoms)
-Global final_symptoms
+global final_symptoms
 
 # Flask Code
 app = Flask(__name__)
