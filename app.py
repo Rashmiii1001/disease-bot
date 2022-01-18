@@ -252,8 +252,8 @@ def processRequest(req):
 
         fulfillmentText="This is a list of co-occuring symptoms"+STRfinal_symptoms+"Do you want to continue?"
         return {
-            "fulfillmentText": fulfillmentText,
-            "final_symptoms" : final_symptoms
+            "fulfillmentText": fulfillmentText
+            
         }
 
     if(intent=='symptoms-start-co-occuring'):
@@ -284,7 +284,7 @@ def processRequest(req):
             "fulfillmentText": fulfillmentText
         }
 
-    elif(intent=='symptoms-start - yes - synonyms - yes - co-occuring - yes'):
+    elif(intent=='symptoms-start-co-occuring - yes'):
 
         fulfillmentText=""
 
