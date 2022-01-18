@@ -50,6 +50,9 @@ final_symptoms=[]
 
 global final_symp
 final_symp=[]
+
+global final_symp2
+final_symp2=[]
 # Flask Code
 app = Flask(__name__)
 
@@ -264,7 +267,7 @@ def processRequest(req):
         fulfillmentText=""
 
         finals=final_symptoms
-        final_symp2=[]
+        # final_symp2=[]
         # terms=term3.split()
         print(finals)
         terms = term3
@@ -392,13 +395,13 @@ def processRequest(req):
         print(my_arr)
         print(my_array)
         #Initialize max with first element of array.
-        max = my_arr[0];
+        max = my_arr[0]
 
         #Loop through the array
         for i in range(0, len(my_arr)):
             #Compare elements of array with max
             if(my_arr[i] > max):
-                max = my_arr[i];
+                max = my_arr[i]
         print('Line 372')
         print(my_arr.index(max))
         print()
