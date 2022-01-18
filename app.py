@@ -46,7 +46,7 @@ Y = df1.iloc[:, 0:1]
 dataset_symptoms = list(X.columns)
 print(dataset_symptoms)
 global final_symptoms
-
+final_symptoms=[]
 # Flask Code
 app = Flask(__name__)
 
@@ -243,7 +243,7 @@ def processRequest(req):
         for tup in dict_symp_tup:
             count+=1
             found_symptoms.append(tup[0])
-        final_symptoms=found_symptoms[0:10:]
+        final_symptoms.append(found_symptoms[0:10:])
         print(final_symptoms)
         STRfinal_symptoms = ' '.join(map(str, final_symptoms))
 
