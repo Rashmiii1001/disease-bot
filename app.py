@@ -223,7 +223,7 @@ def processRequest(req):
 
         # Iteratively, suggest top co-occuring symptoms to the user and ask to select the ones applicable
         found_symptoms=[]
-     #   final_symptoms=[]
+
         count=0
         for tup in dict_symp_tup:
             count+=1
@@ -258,14 +258,14 @@ def processRequest(req):
 
         fulfillmentText=""
 
-        finals=final_symptoms
-        print(finals)
+        finals=final_symptoms[0]
+        print("Line 262 - ", finals)
         for i in range(len(term3)):
             x=int(term3[i])
-            print(x)
-            final_symp2.append(finals[0][x])
+            final_symp2.append(finals[x])
             
         print(final_symp2)
+        
         for i in range(len(final_symp)):
             final_symp2.append(final_symp[i])
 
