@@ -219,7 +219,7 @@ def processRequest(req):
         # Symptoms that co-occur with the ones selected by user
         dict_symp = dict(Counter(counter_list))
         dict_symp_tup = sorted(dict_symp.items(), key=operator.itemgetter(1),reverse=True)
-        print(dict_symp_tup)
+        # print(dict_symp_tup)         #Lists all the cooccuring symptoms
 
         # Iteratively, suggest top co-occuring symptoms to the user and ask to select the ones applicable
         found_symptoms=[]
@@ -230,7 +230,7 @@ def processRequest(req):
             found_symptoms.append(tup[0])
         final_symptoms.append(found_symptoms[0:10:])
         print(final_symptoms)
-        
+
         def defSTRfinal_symptoms():
             fulfillmentText = "\n"
             for idx, value in enumerate(final_symptoms):
@@ -241,7 +241,7 @@ def processRequest(req):
                 print(fulfillmentText)     
             return fulfillmentText
 
-        fulfillmentText="This is a list of co-occuring symptoms - \n" + defSTRfinal_symptoms + " Enter the applicable indices. \n \nExample - I have 1,2,3"
+        fulfillmentText="This is a list of co-occuring symptoms - \n" + defSTRfinal_symptoms() + " Enter the applicable indices. \n \nExample - I have 1,2,3"
         return {
             "fulfillmentText": fulfillmentText
             
@@ -249,19 +249,19 @@ def processRequest(req):
 
     if(intent=='symptoms-start-co-occuring'):
 
-        term3=parameters.get("number")
-        print(term3)
+        term3 = []
+        userinput = parameters.get("number")
+        print(userinput )
+        for i in range(0, len(userinput)):
+            term3.append(int(userinput[i])-1)
+        print("Line 257 - User entered indices after processing - ", term3)
 
         fulfillmentText=""
 
         finals=final_symptoms
-        # final_symp2=[]
-        # terms=term3.split()
         print(finals)
-        terms = term3
-        print(terms)
-        for i in range(len(terms)):
-            x=int(terms[i])
+        for i in range(len(term3)):
+            x=int(term3[i])
             print(x)
             final_symp2.append(finals[0][x])
             
@@ -269,8 +269,17 @@ def processRequest(req):
         for i in range(len(final_symp)):
             final_symp2.append(final_symp[i])
 
-        STRfinal_symp2 = ' '.join(map(str, final_symp2))
-        fulfillmentText="This is the final list of symptoms"+STRfinal_symp2+"Would you like to proceed?"
+        def defSTRfinal_symp2():
+            fulfillmentText = "\n"
+            for idx, value in enumerate(final_symp2):
+                index = int(idx)+1
+                tup =  (index, ":", value, "\n")
+                STRfinal_symp2 = ' '.join(map(str, final_symp2))
+                fulfillmentText += STRfinal_symp2
+                print(fulfillmentText)     
+            return fulfillmentText
+
+        fulfillmentText="This is the final list of symptoms - \n"+ defSTRfinal_symp2() + "Would you like to proceed? \n"
         return {
             "fulfillmentText": fulfillmentText
         }
@@ -283,14 +292,12 @@ def processRequest(req):
         for val in final_symp2:
             print(val)
             sample_x[dataset_symptoms.index(val)]=1
+        
         # Predict disease
         print(final_symp2)
         lr = LogisticRegression()
         lr = lr.fit(X, Y)
         lr_pred = lr.predict_proba([sample_x])
-        # print(lr_pred)
-
-
 
         # Predict disease
         knn = KNeighborsClassifier(n_neighbors=7, weights='distance', n_jobs=4)
@@ -379,7 +386,7 @@ def processRequest(req):
             # topk_dict[t] = prob
             my_arr.append(prob)
 
-        print('Line 361')
+        print('Line 389')
         print(my_arr)
         print(my_array)
         #Initialize max with first element of array.
