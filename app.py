@@ -173,29 +173,28 @@ def processRequest(req):
             fulfillmentText = "\n"
             for idx, value in enumerate(found_symptoms):
                 index = int(idx)+1
-                print(index, ":", value)
                 tup =  (index, ":", value, "\n")
-                print(tup)
                 STRfound_symptoms = ' '.join(map(str, tup))
                 fulfillmentText += STRfound_symptoms
                 print(fulfillmentText)     
             return fulfillmentText
         
-        fulfillmentText= "This is the list of synonyms of your symptoms "+ defSTRfound_symptoms() +"  Enter indices."
-        # for idx, symp in enumerate(found_symptoms):
-        #     return(idx,":",symp)
+        fulfillmentText= "This is the list of synonyms of your symptoms - "+ defSTRfound_symptoms() +" Enter the applicable indices. \n \nExample - I have 1,2,3"
         return {
             "fulfillmentText": fulfillmentText
         }
 
 
     if(intent=='symptoms-start-synonyms'):
-        print("inside part 2")
         fulfillmentText=""
-
-        term2= parameters.get("number")
-        print(term2)
-
+        
+        term2 = []
+        userinput = parameters.get("number")
+        print(userinput )
+        for i in range(0, len(userinput)):
+            term2.append(int(userinput[i])-1)
+        print("Line 196 - User entered indices after processing - ", term2)
+      
         # Show the related symptoms found in the dataset and ask user to select among them
         select_list = term2
         # Find other relevant symptoms from the dataset based on user symptoms based on the highest co-occurance with the
@@ -231,9 +230,18 @@ def processRequest(req):
             found_symptoms.append(tup[0])
         final_symptoms.append(found_symptoms[0:10:])
         print(final_symptoms)
-        STRfinal_symptoms = ' '.join(map(str, final_symptoms))
+        
+        def defSTRfinal_symptoms():
+            fulfillmentText = "\n"
+            for idx, value in enumerate(final_symptoms):
+                index = int(idx)+1
+                tup =  (index, ":", value, "\n")
+                STRfinal_symptoms = ' '.join(map(str, tup))
+                fulfillmentText += STRfinal_symptoms
+                print(fulfillmentText)     
+            return fulfillmentText
 
-        fulfillmentText="This is a list of co-occuring symptoms"+STRfinal_symptoms+"Do you want to continue?"
+        fulfillmentText="This is a list of co-occuring symptoms - \n" + defSTRfinal_symptoms + " Enter the applicable indices. \n \nExample - I have 1,2,3"
         return {
             "fulfillmentText": fulfillmentText
             
