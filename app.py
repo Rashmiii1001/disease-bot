@@ -170,12 +170,12 @@ def processRequest(req):
         print(found_symptoms)
 
         # STRfound_symptoms = ' '.join(map(str, found_symptoms))
-        fulfillmentText= "This is the list of symptoms after processing- \n" 
+        fulfillmentText += "This is the list of symptoms after processing- \n" 
         for idx, value in enumerate(found_symptoms):
             index = int(idx)+1
             print(index, ":", value)
             fulfillmentText += (index, ":", value)
-        fulfillmentText =+  "\n\n Enter the indices of the applicable synonyms. \n Example - I have 1,3,4\n"
+        fulfillmentText +=  "\n\n Enter the indices of the applicable synonyms. \n Example - I have 1,3,4\n"
         # for idx, symp in enumerate(found_symptoms):
         #     return(idx,":",symp)
         return {
