@@ -233,7 +233,7 @@ def processRequest(req):
 
         def defSTRfinal_symptoms():
             fulfillmentText = "\n"
-            for idx, value in enumerate(final_symptoms):
+            for idx, value in enumerate(final_symptoms[0]):
                 index = int(idx)+1
                 tup =  (index, ":", value, "\n")
                 STRfinal_symptoms = ' '.join(map(str, tup))
