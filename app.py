@@ -179,7 +179,7 @@ def processRequest(req):
                 STRfound_symptoms = ' '.join(map(str, tup))
                 fulfillmentText += STRfound_symptoms
                 print(fulfillmentText)     
-                return fulfillmentText
+            return fulfillmentText
         
         fulfillmentText= "This is the list of synonyms of your symptoms "+ defSTRfound_symptoms() +"  Enter indices."
         # for idx, symp in enumerate(found_symptoms):
