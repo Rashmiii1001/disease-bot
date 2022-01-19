@@ -1,42 +1,33 @@
-from flask import Flask, request, make_response, render_template
-import json
-from flask_cors import cross_origin
-# from logger import logger
-import requests
-from bs4 import BeautifulSoup
-import re
-from googlesearch import search
-import warnings
-warnings.filterwarnings("ignore")
-import numpy as np
-import pandas as pd
-from sklearn.metrics import accuracy_score, precision_recall_fscore_support
-from sklearn.model_selection import train_test_split, cross_val_score
-from statistics import mean
-from nltk.corpus import wordnet
-import requests
-from bs4 import BeautifulSoup
-from nltk.corpus import stopwords
-from nltk.stem import WordNetLemmatizer
-from nltk.tokenize import RegexpTokenizer
-from itertools import combinations
-from time import time
-from collections import Counter
-import operator
-import math
-from sklearn.linear_model import LogisticRegression
-warnings.simplefilter("ignore")
-from sklearn.tree import DecisionTreeClassifier
+# from sklearn.metrics import accuracy_score, precision_recall_fscore_support
+# from sklearn.model_selection import train_test_split, cross_val_score
 from sklearn.linear_model import LogisticRegression
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.naive_bayes import MultinomialNB
-from sklearn.ensemble import RandomForestClassifier
+from flask import Flask, request, make_response, render_template
+from flask_cors import cross_origin
+from nltk.corpus import stopwords, wordnet
+from nltk.stem import WordNetLemmatizer
+from nltk.tokenize import RegexpTokenizer
+from itertools import combinations
+from statistics import mean
+from collections import Counter
+from bs4 import BeautifulSoup
+from googlesearch import search
+from time import time
+import operator
+import math
+import requests
+import re
+import numpy as np
+import pandas as pd
+import json
 import nltk
 nltk.download('all')
+import warnings
+warnings.filterwarnings("ignore")
+warnings.simplefilter("ignore")
 
-# df = pd.read_csv(io.BytesIO(uploaded['dis_sym_dataset_comb.csv']))
 df = pd.read_csv("dis_sym_dataset_comb.csv")
-# df1 = pd.read_csv(io.BytesIO(uploaded1['dis_sym_dataset_norm.csv']))
 df1 = pd.read_csv("dis_sym_dataset_norm.csv")
 
 X = df1.iloc[:, 1:]
@@ -44,15 +35,16 @@ Y = df1.iloc[:, 0:1]
 
 # List of symptoms
 dataset_symptoms = list(X.columns)
-print(dataset_symptoms)
+# print(dataset_symptoms)
+
+# Global Lists
 global final_symptoms
-final_symptoms=[]
-
 global final_symp
-final_symp=[]
-
 global final_symp2
+final_symptoms=[]
+final_symp=[]
 final_symp2=[]
+
 # Flask Code
 app = Flask(__name__)
 
@@ -64,62 +56,41 @@ def index():
 @app.route('/webhook', methods=['POST'])
 @cross_origin()
 def webhook():
-
-    print("Inside webhook!!!")
-
     req = request.get_json(silent=True, force=True)
-    print("Line 57 - ", req)
     res = processRequest(req)
     res = json.dumps(res, indent=4)
-    print("Line 60 res - ", res)
+    print("Line 62 response - ", res)
     r = make_response(res)
     r.headers['Content-Type'] = 'application/json'
     return r
 
-
 # processing the request from dialogflow
 def processRequest(req):
-    # log = logger.Log()
 
-    print("Inside process request!!!")
-
+    print("Line 70 - Processing request")
     sessionID=req.get('responseId')
-
     result = req.get("queryResult")
-    user_says=result.get("queryText")
-    # log.write_log(sessionID, "User Says: "+user_says)
     parameters = result.get("parameters")
-    print("!!!!!!!!!!!!!!!!!!!!!!!!")
-    print(result.get("outputContexts")[0])
-    print(result.get("outputContexts")[0].get("parameters"))
     parameter2 = result.get("outputContexts")[0].get("parameters").get("symptoms")
-    print(parameter2)
-    print("Line 78 - ", parameters)
-
+    print("Line 75 - ", parameters)
     intent = result.get("intent").get('displayName')
+    print("Line 77 - Intent Name ", intent)
 
     def diseaseDetail(term):
-        print("Inside diseaseDetail")
+        print("Line 80 - Finding details")
         diseases=[term]
-        print("Line 85 and 86")
-        print(diseases)
         ret=term+"\n"
         for dis in diseases:
-                # search "disease wilipedia" on google
             query = dis+' wikipedia'
-                # tld="co.in"
-                # ,stop=10,pause=0.5
             for sr in search(query):
-                    # open wikipedia link
                 match=re.search(r'wikipedia',sr)
                 filled = 0
                 if match:
                     wiki = requests.get(sr,verify=False)
                     soup = BeautifulSoup(wiki.content, 'html5lib')
-                        # Fetch HTML code for 'infobox'
+                    # Fetch HTML code for 'infobox'
                     info_table = soup.find("table", {"class":"infobox"})
                     if info_table is not None:
-                            # Preprocess contents of infobox
                         for row in info_table.find_all("tr"):
                             data=row.find("th",{"scope":"row"})
                             if data is not None:
@@ -132,29 +103,26 @@ def processRequest(req):
                                 symptom=re.sub(r'<[^<]+?>',' ',symptom) # All the tags
                                 symptom=re.sub(r'\[.*\]','',symptom) # Remove citation text
                                 symptom=symptom.replace("&gt",">")
-                                ret+=data.get_text()+" - "+symptom+"\n"
-                                # print(data.get_text(),"-",symptom)
+                                ret += data.get_text() + " - " + symptom +"\n"
                                 filled = 1
                         if filled:
                             break
         return ret
 
-
+    # First Time Webhook call
     if(intent=='symptoms-start'):
-        # processed_user_symptoms=parameters.get("symptoms.original")
         processed_user_symptoms=parameters.get("symptoms")
-
-        print("Line 127", processed_user_symptoms)
+        print("Line 115 - User symptoms are ", processed_user_symptoms)
 
         fulfillmentText=""
         found_symptoms = set()
-        # utlities for pre-processing
+
         stop_words = stopwords.words('english')
         lemmatizer = WordNetLemmatizer()
         splitter = RegexpTokenizer(r'\w+')
 
         def synonyms(term):
-            print("Inside synonyms")
+            print("Ine 125 - Inside function synonyms")
             synonyms = []
             response = requests.get('https://www.thesaurus.com/browse/{}'.format(term))
             soup = BeautifulSoup(response.content,  "html.parser")
@@ -200,8 +168,14 @@ def processRequest(req):
                     found_symptoms.add(data_sym)
         found_symptoms = list(found_symptoms)
         print(found_symptoms)
+        found_symptomsDict = {}
+        for idx, sym in enumerate(found_symptoms):
+            indice = int(idx) + 1
+            found_symptomsDict[indice] = sym
+            print(found_symptomsDict)
+
         STRfound_symptoms = ' '.join(map(str, found_symptoms))
-        fulfillmentText= "This is the list of synonyms of your symptoms "+STRfound_symptoms+"  Enter indices."
+        fulfillmentText= "This is the list of symptoms after processing \n" + STRfound_symptoms+ "\n Enter the indices of the applicable synonyms. \n Example - I have 1,3,4\n"
         # for idx, symp in enumerate(found_symptoms):
         #     return(idx,":",symp)
         return {
