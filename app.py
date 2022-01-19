@@ -179,7 +179,7 @@ def processRequest(req):
                 print(fulfillmentText)     
             return fulfillmentText
         
-        fulfillmentText= "This is the list of synonyms of your symptoms - "+ defSTRfound_symptoms() +" Enter the applicable indices. \n \nExample - I have 1,2,3"
+        fulfillmentText= "This is the list of synonyms of your symptoms - "+ defSTRfound_symptoms() +" Enter the applicable indices. \n In the form - I have 1,2,3"
         return {
             "fulfillmentText": fulfillmentText
         }
@@ -241,7 +241,7 @@ def processRequest(req):
                 print(fulfillmentText)     
             return fulfillmentText
 
-        fulfillmentText="This is a list of co-occuring symptoms - \n" + defSTRfinal_symptoms() + " Enter the applicable indices. \n \nExample - I have 1,2,3"
+        fulfillmentText="This is a list of co-occuring symptoms - \n" + defSTRfinal_symptoms() + " Enter the applicable indices. \n In the form - Choose 1,2,3"
         return {
             "fulfillmentText": fulfillmentText
             
@@ -451,17 +451,13 @@ def processRequest(req):
 
         detail =  "Requested information -  \n"+ diseaseDetail(disease_info)
         fulfillmentText += detail
-        print(fulfillmentText)
+        print("Line 454 - ", fulfillmentText)
 
-
-
-        # log.write_log(sessionID, "Bot Says: "+fulfillmentText)
         return {
             "fulfillmentText": fulfillmentText
         }
 
     else:
-        # log.write_log(sessionID, "Bot Says: " + result.fulfillmentText)
         print("else part")
 
 
