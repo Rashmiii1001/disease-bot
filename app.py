@@ -179,7 +179,7 @@ def processRequest(req):
                 print(fulfillmentText)     
             return fulfillmentText
         
-        fulfillmentText= "This is the list of synonyms of your symptoms - "+ defSTRfound_symptoms() +" Enter the applicable indices. \n In the form - I have 1,2,3"
+        fulfillmentText= "This is the list of synonyms of your symptoms - "+ defSTRfound_symptoms() +" Enter the applicable indices. \n <em> In the form - I have 1,2,3 </em>"
         return {
             "fulfillmentText": fulfillmentText
         }
@@ -241,7 +241,7 @@ def processRequest(req):
                 print(fulfillmentText)     
             return fulfillmentText
 
-        fulfillmentText="This is a list of co-occuring symptoms - \n" + defSTRfinal_symptoms() + " Enter the applicable indices. \n <strong> In the form - Choose 1,2,3 <strong>"
+        fulfillmentText="This is a list of co-occuring symptoms - \n" + defSTRfinal_symptoms() + " Enter the applicable indices. \n <b> In the form - Choose 1,2,3 </b>"
         return {
             "fulfillmentText": fulfillmentText
             
@@ -279,7 +279,7 @@ def processRequest(req):
                 print(fulfillmentText)     
             return fulfillmentText
 
-        fulfillmentText="This is the final list of symptoms - \n"+ defSTRfinal_symp2() + "Would you like to proceed? \n"
+        fulfillmentText="This is the final list of symptoms - \n"+ defSTRfinal_symp2() + "Type <strong>YES</strong> to proceed. \n"
         return {
             "fulfillmentText": fulfillmentText
         }
@@ -400,9 +400,9 @@ def processRequest(req):
         print('Line 372')
         print(my_arr.index(max))
         print()
-        fulfillmentText = "You may have one of these following diseases: \n"
+        fulfillmentText = "You may have one of these following diseases: \n\n"
         fulfillmentText += diseaseDetail(my_array[my_arr.index(max)])
-        fulfillmentText += "\n We suggest consulting a real doctor before starting any treatment for your own safety!"
+        fulfillmentText += "We suggest consulting a real doctor before starting any treatment for your own safety!"
         return {
             "fulfillmentText": fulfillmentText
         }
