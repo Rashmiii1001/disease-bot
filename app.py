@@ -103,7 +103,7 @@ def processRequest(req):
                                 symptom=re.sub(r'<[^<]+?>',' ',symptom) # All the tags
                                 symptom=re.sub(r'\[.*\]','',symptom) # Remove citation text
                                 symptom=symptom.replace("&gt",">")
-                                ret += data.get_text() + " - " + symptom +"\n"
+                                ret += data.get_text() + " - " + symptom +"\n\n"
                                 filled = 1
                         if filled:
                             break
@@ -241,7 +241,7 @@ def processRequest(req):
                 print(fulfillmentText)     
             return fulfillmentText
 
-        fulfillmentText="This is a list of co-occuring symptoms - \n" + defSTRfinal_symptoms() + " Enter the applicable indices. \n In the form - Choose 1,2,3"
+        fulfillmentText="This is a list of co-occuring symptoms - \n" + defSTRfinal_symptoms() + " Enter the applicable indices. \n <strong> In the form - Choose 1,2,3 <strong>"
         return {
             "fulfillmentText": fulfillmentText
             
@@ -274,7 +274,7 @@ def processRequest(req):
             for idx, value in enumerate(final_symp2):
                 index = int(idx)+1
                 tup =  (index, ":", value, "\n")
-                STRfinal_symp2 = ' '.join(map(str, final_symp2))
+                STRfinal_symp2 = ' '.join(map(str, tup))
                 fulfillmentText += STRfinal_symp2
                 print(fulfillmentText)     
             return fulfillmentText
@@ -400,7 +400,9 @@ def processRequest(req):
         print('Line 372')
         print(my_arr.index(max))
         print()
-        fulfillmentText=diseaseDetail(my_array[my_arr.index(max)])
+        fulfillmentText = "You may have one of these following diseases: \n"
+        fulfillmentText += diseaseDetail(my_array[my_arr.index(max)])
+        fulfillmentText += "\n We suggest consulting a real doctor before starting any treatment for your own safety!"
         return {
             "fulfillmentText": fulfillmentText
         }
