@@ -406,10 +406,10 @@ def processRequest(req):
         fulfillmentText += diseaseDetail(my_array[my_arr.index(max)])
         fulfillmentText += "We suggest consulting a real doctor before starting any treatment for your own safety!"
 
-        # Empty the lists for next prediction
-        final_symptoms.clear()
-        final_symp .clear()
-        final_symp2.clear()
+        # # Empty the lists for next prediction
+        # final_symptoms.clear()
+        # final_symp .clear()
+        # final_symp2.clear()
 
         return {
             "fulfillmentText": fulfillmentText
