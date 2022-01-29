@@ -1,33 +1,42 @@
-# from sklearn.metrics import accuracy_score, precision_recall_fscore_support
-# from sklearn.model_selection import train_test_split, cross_val_score
-from sklearn.linear_model import LogisticRegression
-from sklearn.neighbors import KNeighborsClassifier
-from sklearn.naive_bayes import MultinomialNB
 from flask import Flask, request, make_response, render_template
+import json
 from flask_cors import cross_origin
-from nltk.corpus import stopwords, wordnet
+# from logger import logger
+import requests
+from bs4 import BeautifulSoup
+import re
+from googlesearch import search
+import warnings
+warnings.filterwarnings("ignore")
+import numpy as np
+import pandas as pd
+from sklearn.metrics import accuracy_score, precision_recall_fscore_support
+from sklearn.model_selection import train_test_split, cross_val_score
+from statistics import mean
+from nltk.corpus import wordnet
+import requests
+from bs4 import BeautifulSoup
+from nltk.corpus import stopwords
 from nltk.stem import WordNetLemmatizer
 from nltk.tokenize import RegexpTokenizer
 from itertools import combinations
-from statistics import mean
-from collections import Counter
-from bs4 import BeautifulSoup
-from googlesearch import search
 from time import time
+from collections import Counter
 import operator
 import math
-import requests
-import re
-import numpy as np
-import pandas as pd
-import json
+from sklearn.linear_model import LogisticRegression
+warnings.simplefilter("ignore")
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.linear_model import LogisticRegression
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.naive_bayes import MultinomialNB
+from sklearn.ensemble import RandomForestClassifier
 import nltk
 nltk.download('all')
-import warnings
-warnings.filterwarnings("ignore")
-warnings.simplefilter("ignore")
 
+# df = pd.read_csv(io.BytesIO(uploaded['dis_sym_dataset_comb.csv']))
 df = pd.read_csv("dis_sym_dataset_comb.csv")
+# df1 = pd.read_csv(io.BytesIO(uploaded1['dis_sym_dataset_norm.csv']))
 df1 = pd.read_csv("dis_sym_dataset_norm.csv")
 
 X = df1.iloc[:, 1:]
@@ -35,16 +44,15 @@ Y = df1.iloc[:, 0:1]
 
 # List of symptoms
 dataset_symptoms = list(X.columns)
-# print(dataset_symptoms)
-
-# Global Lists
+print(dataset_symptoms)
 global final_symptoms
-global final_symp
-global final_symp2
 final_symptoms=[]
-final_symp=[]
-final_symp2=[]
 
+global final_symp
+final_symp=[]
+
+global final_symp2
+final_symp2=[]
 # Flask Code
 app = Flask(__name__)
 
@@ -56,41 +64,62 @@ def index():
 @app.route('/webhook', methods=['POST'])
 @cross_origin()
 def webhook():
+
+    print("Inside webhook!!!")
+
     req = request.get_json(silent=True, force=True)
+    print("Line 57 - ", req)
     res = processRequest(req)
     res = json.dumps(res, indent=4)
-    print("Line 62 response - ", res)
+    print("Line 60 res - ", res)
     r = make_response(res)
     r.headers['Content-Type'] = 'application/json'
     return r
 
+
 # processing the request from dialogflow
 def processRequest(req):
+    # log = logger.Log()
 
-    print("Line 70 - Processing request")
+    print("Inside process request!!!")
+
     sessionID=req.get('responseId')
+
     result = req.get("queryResult")
+    user_says=result.get("queryText")
+    # log.write_log(sessionID, "User Says: "+user_says)
     parameters = result.get("parameters")
+    print("!!!!!!!!!!!!!!!!!!!!!!!!")
+    print(result.get("outputContexts")[0])
+    print(result.get("outputContexts")[0].get("parameters"))
     parameter2 = result.get("outputContexts")[0].get("parameters").get("symptoms")
-    print("Line 75 - ", parameters)
+    print(parameter2)
+    print("Line 78 - ", parameters)
+
     intent = result.get("intent").get('displayName')
-    print("Line 77 - Intent Name ", intent)
 
     def diseaseDetail(term):
-        print("Line 80 - Finding details")
+        print("Inside diseaseDetail")
         diseases=[term]
+        print("Line 85 and 86")
+        print(diseases)
         ret=term+"\n"
         for dis in diseases:
+                # search "disease wilipedia" on google
             query = dis+' wikipedia'
+                # tld="co.in"
+                # ,stop=10,pause=0.5
             for sr in search(query):
+                    # open wikipedia link
                 match=re.search(r'wikipedia',sr)
                 filled = 0
                 if match:
                     wiki = requests.get(sr,verify=False)
                     soup = BeautifulSoup(wiki.content, 'html5lib')
-                    # Fetch HTML code for 'infobox'
+                        # Fetch HTML code for 'infobox'
                     info_table = soup.find("table", {"class":"infobox"})
                     if info_table is not None:
+                            # Preprocess contents of infobox
                         for row in info_table.find_all("tr"):
                             data=row.find("th",{"scope":"row"})
                             if data is not None:
@@ -103,26 +132,29 @@ def processRequest(req):
                                 symptom=re.sub(r'<[^<]+?>',' ',symptom) # All the tags
                                 symptom=re.sub(r'\[.*\]','',symptom) # Remove citation text
                                 symptom=symptom.replace("&gt",">")
-                                ret += data.get_text() + " - " + symptom +"\n\n"
+                                ret+=data.get_text()+" - "+symptom+"\n"
+                                # print(data.get_text(),"-",symptom)
                                 filled = 1
                         if filled:
                             break
         return ret
 
-    # First Time Webhook call
+
     if(intent=='symptoms-start'):
+        # processed_user_symptoms=parameters.get("symptoms.original")
         processed_user_symptoms=parameters.get("symptoms")
-        print("Line 115 - User symptoms are ", processed_user_symptoms)
+
+        print("Line 127", processed_user_symptoms)
 
         fulfillmentText=""
         found_symptoms = set()
-
+        # utlities for pre-processing
         stop_words = stopwords.words('english')
         lemmatizer = WordNetLemmatizer()
         splitter = RegexpTokenizer(r'\w+')
 
         def synonyms(term):
-            print("Ine 125 - Inside function synonyms")
+            print("Inside synonyms")
             synonyms = []
             response = requests.get('https://www.thesaurus.com/browse/{}'.format(term))
             soup = BeautifulSoup(response.content,  "html.parser")
@@ -168,33 +200,22 @@ def processRequest(req):
                     found_symptoms.add(data_sym)
         found_symptoms = list(found_symptoms)
         print(found_symptoms)
-
-        def defSTRfound_symptoms():
-            fulfillmentText = "\n"
-            for idx, value in enumerate(found_symptoms):
-                index = int(idx)+1
-                tup =  (index, ":", value, "\n")
-                STRfound_symptoms = ' '.join(map(str, tup))
-                fulfillmentText += STRfound_symptoms
-                print(fulfillmentText)     
-            return fulfillmentText
-        
-        fulfillmentText= "This is the list of synonyms of your symptoms - "+ defSTRfound_symptoms() +" Enter the applicable indices. \n In the form - I have 1,2,3 "
+        STRfound_symptoms = ' '.join(map(str, found_symptoms))
+        fulfillmentText= "This is the list of synonyms of your symptoms "+STRfound_symptoms+"  Enter indices."
+        # for idx, symp in enumerate(found_symptoms):
+        #     return(idx,":",symp)
         return {
             "fulfillmentText": fulfillmentText
         }
 
 
     if(intent=='symptoms-start-synonyms'):
+        print("inside part 2")
         fulfillmentText=""
-        
-        term2 = []
-        userinput = parameters.get("number")
-        print(userinput )
-        for i in range(0, len(userinput)):
-            term2.append(int(userinput[i])-1)
-        print("Line 196 - User entered indices after processing - ", term2)
-      
+
+        term2= parameters.get("number")
+        print(term2)
+
         # Show the related symptoms found in the dataset and ask user to select among them
         select_list = term2
         # Find other relevant symptoms from the dataset based on user symptoms based on the highest co-occurance with the
@@ -219,29 +240,20 @@ def processRequest(req):
         # Symptoms that co-occur with the ones selected by user
         dict_symp = dict(Counter(counter_list))
         dict_symp_tup = sorted(dict_symp.items(), key=operator.itemgetter(1),reverse=True)
-        # print(dict_symp_tup)         #Lists all the cooccuring symptoms
+        print(dict_symp_tup)
 
         # Iteratively, suggest top co-occuring symptoms to the user and ask to select the ones applicable
         found_symptoms=[]
-
+     #   final_symptoms=[]
         count=0
         for tup in dict_symp_tup:
             count+=1
             found_symptoms.append(tup[0])
         final_symptoms.append(found_symptoms[0:10:])
         print(final_symptoms)
+        STRfinal_symptoms = ' '.join(map(str, final_symptoms))
 
-        def defSTRfinal_symptoms():
-            fulfillmentText = "\n"
-            for idx, value in enumerate(final_symptoms[0]):
-                index = int(idx)+1
-                tup =  (index, ":", value, "\n")
-                STRfinal_symptoms = ' '.join(map(str, tup))
-                fulfillmentText += STRfinal_symptoms
-                print(fulfillmentText)     
-            return fulfillmentText
-
-        fulfillmentText="This is a list of co-occuring symptoms - \n" + defSTRfinal_symptoms() + " Enter the applicable indices. \n In the form - Choose 1,2,3 "
+        fulfillmentText="This is a list of co-occuring symptoms"+STRfinal_symptoms+"Do you want to continue?"
         return {
             "fulfillmentText": fulfillmentText
             
@@ -249,37 +261,28 @@ def processRequest(req):
 
     if(intent=='symptoms-start-co-occuring'):
 
-        term3 = []
-        userinput = parameters.get("number")
-        print(userinput )
-        for i in range(0, len(userinput)):
-            term3.append(int(userinput[i])-1)
-        print("Line 257 - User entered indices after processing - ", term3)
+        term3=parameters.get("number")
+        print(term3)
 
         fulfillmentText=""
 
-        finals=final_symptoms[0]
-        print("Line 262 - ", finals)
-        for i in range(len(term3)):
-            x=int(term3[i])
-            final_symp2.append(finals[x])
+        finals=final_symptoms
+        # final_symp2=[]
+        # terms=term3.split()
+        print(finals)
+        terms = term3
+        print(terms)
+        for i in range(len(terms)):
+            x=int(terms[i])
+            print(x)
+            final_symp2.append(finals[0][x])
             
         print(final_symp2)
-        
         for i in range(len(final_symp)):
             final_symp2.append(final_symp[i])
 
-        def defSTRfinal_symp2():
-            fulfillmentText = "\n"
-            for idx, value in enumerate(final_symp2):
-                index = int(idx)+1
-                tup =  (index, ":", value, "\n")
-                STRfinal_symp2 = ' '.join(map(str, tup))
-                fulfillmentText += STRfinal_symp2
-                print(fulfillmentText)     
-            return fulfillmentText
-
-        fulfillmentText="This is the final list of symptoms - \n"+ defSTRfinal_symp2() + "Type YES to proceed. \n"
+        STRfinal_symp2 = ' '.join(map(str, final_symp2))
+        fulfillmentText="This is the final list of symptoms"+STRfinal_symp2+"Would you like to proceed?"
         return {
             "fulfillmentText": fulfillmentText
         }
@@ -292,12 +295,14 @@ def processRequest(req):
         for val in final_symp2:
             print(val)
             sample_x[dataset_symptoms.index(val)]=1
-        
         # Predict disease
         print(final_symp2)
         lr = LogisticRegression()
         lr = lr.fit(X, Y)
         lr_pred = lr.predict_proba([sample_x])
+        # print(lr_pred)
+
+
 
         # Predict disease
         knn = KNeighborsClassifier(n_neighbors=7, weights='distance', n_jobs=4)
@@ -386,7 +391,7 @@ def processRequest(req):
             # topk_dict[t] = prob
             my_arr.append(prob)
 
-        print('Line 389')
+        print('Line 361')
         print(my_arr)
         print(my_array)
         #Initialize max with first element of array.
@@ -400,9 +405,7 @@ def processRequest(req):
         print('Line 372')
         print(my_arr.index(max))
         print()
-        fulfillmentText = "You may have one of these following diseases: \n\n"
-        fulfillmentText += diseaseDetail(my_array[my_arr.index(max)])
-        fulfillmentText += "We suggest consulting a real doctor before starting any treatment for your own safety!"
+        fulfillmentText=diseaseDetail(my_array[my_arr.index(max)])
         return {
             "fulfillmentText": fulfillmentText
         }
@@ -453,13 +456,17 @@ def processRequest(req):
 
         detail =  "Requested information -  \n"+ diseaseDetail(disease_info)
         fulfillmentText += detail
-        print("Line 454 - ", fulfillmentText)
+        print(fulfillmentText)
 
+
+
+        # log.write_log(sessionID, "Bot Says: "+fulfillmentText)
         return {
             "fulfillmentText": fulfillmentText
         }
 
     else:
+        # log.write_log(sessionID, "Bot Says: " + result.fulfillmentText)
         print("else part")
 
 
