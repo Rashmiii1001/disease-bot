@@ -407,9 +407,9 @@ def processRequest(req):
         fulfillmentText += "We suggest consulting a real doctor before starting any treatment for your own safety!"
 
         # Empty the lists for next prediction
-        final_symptoms=[]
-        final_symp=[]
-        final_symp2=[]
+        final_symptoms.clear()
+        final_symp .clear()
+        final_symp2.clear()
 
         return {
             "fulfillmentText": fulfillmentText
