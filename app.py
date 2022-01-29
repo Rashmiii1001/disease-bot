@@ -241,7 +241,7 @@ def processRequest(req):
                 print(fulfillmentText)     
             return fulfillmentText
 
-        fulfillmentText="This is a list of co-occuring symptoms - \n" + defSTRfinal_symptoms() + " Enter the applicable indices. \n In the form - Choose 1,2,3"
+        fulfillmentText="This is a list of co-occuring symptoms - \n" + defSTRfinal_symptoms() + " Enter the applicable indices. \n In the form - Choose 1,2,3 "
         return {
             "fulfillmentText": fulfillmentText
             
@@ -257,8 +257,6 @@ def processRequest(req):
         print("Line 257 - User entered indices after processing - ", term3)
 
         fulfillmentText=""
-
-        print(final_symptoms)
 
         finals=final_symptoms[0]
         print("Line 262 - ", finals)
@@ -401,16 +399,10 @@ def processRequest(req):
                 max = my_arr[i]
         print('Line 372')
         print(my_arr.index(max))
-
+        print()
         fulfillmentText = "You may have one of these following diseases: \n\n"
         fulfillmentText += diseaseDetail(my_array[my_arr.index(max)])
         fulfillmentText += "We suggest consulting a real doctor before starting any treatment for your own safety!"
-
-        # # Empty the lists for next prediction
-        # final_symptoms.clear()
-        # final_symp .clear()
-        # final_symp2.clear()
-
         return {
             "fulfillmentText": fulfillmentText
         }
