@@ -405,6 +405,12 @@ def processRequest(req):
         fulfillmentText = "You may have one of these following diseases: \n\n"
         fulfillmentText += diseaseDetail(my_array[my_arr.index(max)])
         fulfillmentText += "We suggest consulting a real doctor before starting any treatment for your own safety!"
+
+        # Empty the lists for next prediction
+        final_symptoms=[]
+        final_symp=[]
+        final_symp2=[]
+
         return {
             "fulfillmentText": fulfillmentText
         }
