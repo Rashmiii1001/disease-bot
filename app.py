@@ -258,6 +258,8 @@ def processRequest(req):
 
         fulfillmentText=""
 
+        print(final_symptoms)
+
         finals=final_symptoms[0]
         print("Line 262 - ", finals)
         for i in range(len(term3)):
