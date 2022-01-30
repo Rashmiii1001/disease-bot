@@ -22,7 +22,7 @@ import numpy as np
 import pandas as pd
 import json
 import nltk
-# nltk.download('all')
+nltk.download('all')
 nltk.download('wordnet', quiet=True)
 import warnings
 warnings.filterwarnings("ignore")
