@@ -168,9 +168,9 @@ def processRequest(req):
                 if count/len(data_sym_split)>0.5:
                     if data_sym in found_symptoms:
                       continue
-                else:
-                    print(data_sym)
-                    found_symptoms.add(data_sym)
+                    else:
+                      print(data_sym)
+                      found_symptoms.add(data_sym)
                     
         found_symptoms = list(found_symptoms)
         print(found_symptoms)
