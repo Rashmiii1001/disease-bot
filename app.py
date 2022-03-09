@@ -28,8 +28,8 @@ import warnings
 warnings.filterwarnings("ignore")
 warnings.simplefilter("ignore")
 
-df = pd.read_csv("Testing.csv")
-df1 = pd.read_csv("Training.csv")
+df = pd.read_csv("Training.csv")
+df1 = pd.read_csv("Testing.csv")
 
 X = df1.iloc[:, 1:]
 Y = df1.iloc[:, 0:1]
