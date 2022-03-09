@@ -28,8 +28,8 @@ import warnings
 warnings.filterwarnings("ignore")
 warnings.simplefilter("ignore")
 
-df = pd.read_csv("Training.csv")
-df1 = pd.read_csv("Testing.csv")
+df = pd.read_csv("enodedDataset.csv")
+df1 = pd.read_csv("enodedDataset-2.csv")
 
 X = df1.iloc[:, 1:]
 Y = df1.iloc[:, 0:1]
@@ -126,7 +126,6 @@ def processRequest(req):
             print("Ine 125 - Inside function synonyms")
             synonyms = []
             response = requests.get('https://www.thesaurus.com/browse/{}'.format(term))
-            print('https://www.thesaurus.com/browse/{}',format(term))
             soup = BeautifulSoup(response.content,  "html.parser")
             try:
                 container=soup.find('section', {'class': 'MainContentContainer'})
