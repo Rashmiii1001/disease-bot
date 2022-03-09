@@ -126,6 +126,7 @@ def processRequest(req):
             print("Ine 125 - Inside function synonyms")
             synonyms = []
             response = requests.get('https://www.thesaurus.com/browse/{}'.format(term))
+            print('https://www.thesaurus.com/browse/{}',format(term))
             soup = BeautifulSoup(response.content,  "html.parser")
             try:
                 container=soup.find('section', {'class': 'MainContentContainer'})
