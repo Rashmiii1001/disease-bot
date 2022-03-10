@@ -43,9 +43,11 @@ dataset_symptoms = list(X.columns)
 
 # Global Lists
 global final_symptoms
+global found_symptoms
 global final_symp
 global final_symp2
 final_symptoms=[]
+found_symptoms=[]
 final_symp=[]
 final_symp2=[]
 
@@ -119,7 +121,7 @@ def processRequest(req):
         print("Line 115 - User symptoms are ", processed_user_symptoms)
 
         fulfillmentText=""
-        found_symptoms = set()
+        # found_symptoms = set()
 
         stop_words = stopwords.words('english')
         lemmatizer = WordNetLemmatizer()
@@ -175,7 +177,7 @@ def processRequest(req):
 #                       print(data_sym)
                     found_symptoms.add(data_sym)
                     
-        found_symptoms = list(found_symptoms)
+        # found_symptoms = list(found_symptoms)
         print(found_symptoms)
 
         def defSTRfound_symptoms():
@@ -211,7 +213,8 @@ def processRequest(req):
         dis_list = set()
         # final_symp = []
         counter_list = []
-        found_symptoms = list(parameter2)
+        # found_symptoms = list(parameter2)
+        print("Line 217")
         print(found_symptoms)
         for idx in select_list:
             symp=found_symptoms[int(idx)]
