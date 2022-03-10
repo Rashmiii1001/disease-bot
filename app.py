@@ -175,7 +175,7 @@ def processRequest(req):
 #                       continue
 #                     else:
 #                       print(data_sym)
-                    found_symptoms.add(data_sym)
+                    found_symptoms.append(data_sym)
                     
         # found_symptoms = list(found_symptoms)
         print(found_symptoms)
