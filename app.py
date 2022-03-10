@@ -43,11 +43,9 @@ dataset_symptoms = list(X.columns)
 
 # Global Lists
 global final_symptoms
-global found_symptoms
 global final_symp
 global final_symp2
 final_symptoms=[]
-found_symptoms=[]
 final_symp=[]
 final_symp2=[]
 
@@ -73,17 +71,17 @@ def webhook():
 # processing the request from dialogflow
 def processRequest(req):
 
-    print("Line 70 - Processing request")
+    print("Line 74 - Processing request")
     sessionID=req.get('responseId')
     result = req.get("queryResult")
     parameters = result.get("parameters")
     parameter2 = result.get("outputContexts")[0].get("parameters").get("symptoms")
-    print("Line 75 - ", parameters)
+    print("Line 79 - ", parameters)
     intent = result.get("intent").get('displayName')
-    print("Line 77 - Intent Name ", intent)
+    print("Line 81 - Intent Name ", intent)
 
     def diseaseDetail(term):
-        print("Line 80 - Finding details")
+        print("Line 84 - Finding details")
         diseases=[term]
         ret=term+"\n"
         for dis in diseases:
@@ -118,17 +116,16 @@ def processRequest(req):
     # First Time Webhook call
     if(intent=='symptoms-start'):
         processed_user_symptoms=parameters.get("symptoms")
-        print("Line 115 - User symptoms are ", processed_user_symptoms)
+        print("Line 119 - User symptoms are ", processed_user_symptoms)
 
         fulfillmentText=""
-        # found_symptoms = set()
+        found_symptoms = set()
 
         stop_words = stopwords.words('english')
         lemmatizer = WordNetLemmatizer()
         splitter = RegexpTokenizer(r'\w+')
 
         def synonyms(term):
-            print("Ine 125 - Inside function synonyms")
             synonyms = []
             response = requests.get('https://www.thesaurus.com/browse/{}'.format(term))
             soup = BeautifulSoup(response.content,  "html.parser")
@@ -142,7 +139,6 @@ def processRequest(req):
                 None
             for syn in wordnet.synsets(term):
                 synonyms+=syn.lemma_names()
-            print(set(synonyms))
             return set(synonyms)
 
     # Taking each user symptom and finding all its synonyms and appending it to the pre-processed symptom string
@@ -158,7 +154,7 @@ def processRequest(req):
             str_sym.add(' '.join(user_sym))
             user_symptoms.append(' '.join(str_sym).replace('_',' '))
         # query expansion performed by joining synonyms found for each symptoms initially entered
-        print("After query expansion done by using the symptoms entered")
+        print("Line 157 - After query expansion done by using the symptoms entered")
         print(user_symptoms)
 
         # Loop over all the symptoms in dataset and check its similarity score to the synonym string of the user-input
@@ -171,13 +167,11 @@ def processRequest(req):
                     if symp in user_sym.split():
                         count+=1
                 if count/len(data_sym_split)>0.5:
-#                     if data_sym in found_symptoms:
-#                       continue
-#                     else:
-#                       print(data_sym)
-                    found_symptoms.append(data_sym)
+                    if data_sym not in found_symptoms:
+                        found_symptoms.add(data_sym)
                     
-        # found_symptoms = list(found_symptoms)
+        found_symptoms = list(found_symptoms)
+        print("Line 174 - found_symptoms :")
         print(found_symptoms)
 
         def defSTRfound_symptoms():
@@ -198,13 +192,14 @@ def processRequest(req):
 
     if(intent=='symptoms-start-synonyms'):
         fulfillmentText=""
-        
+        print("Line 195 - found_symptoms :")
+        print(found_symptoms)
         term2 = []
         userinput = parameters.get("number")
         print(userinput )
         for i in range(0, len(userinput)):
             term2.append(int(userinput[i])-1)
-        print("Line 196 - User entered indices after processing - ", term2)
+        print("Line 202 - User entered indices after processing - ", term2)
       
         # Show the related symptoms found in the dataset and ask user to select among them
         select_list = term2
@@ -213,8 +208,8 @@ def processRequest(req):
         dis_list = set()
         # final_symp = []
         counter_list = []
-        # found_symptoms = list(parameter2)
-        print("Line 217")
+        found_symptoms = list(parameter2)
+        print("Line 212 - parameter2 - found_symptoms:")
         print(found_symptoms)
         for idx in select_list:
             symp=found_symptoms[int(idx)]
@@ -241,6 +236,7 @@ def processRequest(req):
             count+=1
             found_symptoms.append(tup[0])
         final_symptoms.append(found_symptoms[0:10:])
+        print("Line 239 - ")
         print(final_symptoms)
 
         def defSTRfinal_symptoms():
@@ -266,12 +262,12 @@ def processRequest(req):
         print(userinput )
         for i in range(0, len(userinput)):
             term3.append(int(userinput[i])-1)
-        print("Line 257 - User entered indices after processing - ", term3)
+        print("Line 265 - User entered indices after processing - ", term3)
 
         fulfillmentText=""
 
         finals=final_symptoms[0]
-        print("Line 262 - ", finals)
+        print("Line 270 - finals :", finals)
         for i in range(len(term3)):
             x=int(term3[i])
             final_symp2.append(finals[x])
@@ -465,7 +461,7 @@ def processRequest(req):
 
         detail =  "Requested information -  \n"+ diseaseDetail(disease_info)
         fulfillmentText += detail
-        print("Line 454 - ", fulfillmentText)
+        print("Line 464 - ", fulfillmentText)
 
         return {
             "fulfillmentText": fulfillmentText
