@@ -181,7 +181,7 @@ def processRequest(req):
                 tup =  (index, ":", value, "\n")
                 STRfound_symptoms = ' '.join(map(str, tup))
                 fulfillmentText += STRfound_symptoms
-                print(fulfillmentText)     
+            print(fulfillmentText)     
             return fulfillmentText
         
         fulfillmentText= "This is the list of synonyms of your symptoms - "+ defSTRfound_symptoms() +" Enter the applicable indices. \n In the form - I have 1,2,3 "
@@ -192,8 +192,8 @@ def processRequest(req):
 
     if(intent=='symptoms-start-synonyms'):
         fulfillmentText=""
-        print("Line 195 - found_symptoms :")
-        print(found_symptoms)
+#         print("Line 195 - found_symptoms :")
+#         print(found_symptoms)
         term2 = []
         userinput = parameters.get("number")
         print(userinput )
