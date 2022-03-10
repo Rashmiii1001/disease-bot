@@ -265,7 +265,7 @@ def processRequest(req):
         print("Line 265 - User entered indices after processing - ", term3)
 
         fulfillmentText=""
-
+        print(final_symptoms)
         finals=final_symptoms[0]
         print("Line 270 - finals :", finals)
         for i in range(len(term3)):
